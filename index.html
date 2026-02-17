@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Receive USD — MonieVerse</title>
+
+  <!-- Fonts -->
+  <link href="https://api.fontshare.com/v2/css?f[]=clash-grotesk@400,500,600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+  <!-- Phosphor Icons -->
+  <script src="https://unpkg.com/@phosphor-icons/web@2.1.1"></script>
+
+  <!-- Anime.js (for QR code wave & hover animations) -->
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.2/lib/anime.min.js"></script>
+
+  <link rel="stylesheet" href="src/styles.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-logo">
+        <img src="src/assets/svg/Logo - Moniverse.svg" alt="MonieVerse" height="32">
+      </div>
+      <div class="header-right">
+        <div class="header-avatar">DS</div>
+        <span class="header-divider"></span>
+        <div class="header-close-group">
+          <button class="header-close" aria-label="Close">
+            <i class="ph ph-x"></i>
+          </button>
+          <span class="header-esc">esc</span>
+        </div>
+      </div>
+    </div>
+    <div class="header-bar-track">
+      <div class="header-bar"></div>
+    </div>
+  </header>
+
+  <!-- Background Pattern -->
+  <div class="bg-pattern-wrapper">
+    <img src="src/assets/svg/Background Pattern.svg" alt="" class="bg-pattern" aria-hidden="true">
+  </div>
+
+  <!-- Main Layout -->
+  <main class="layout">
+
+    <!-- Left Stepper -->
+    <div class="stepper">
+      <div class="stepper-step active">
+        <span class="stepper-dot"></span>
+        <span class="stepper-label">Details</span>
+      </div>
+      <div class="stepper-connector"></div>
+      <div class="stepper-step inactive">
+        <span class="stepper-dot"></span>
+        <span class="stepper-label">Confirmation</span>
+      </div>
+    </div>
+
+    <!-- Step Counter -->
+    <div class="step-counter">Step <span class="step-current">1</span> / 2</div>
+
+    <!-- Main Card -->
+    <div class="card">
+      <!-- Gradient Banner -->
+      <div class="card-gradient"></div>
+
+      <!-- Scrollable Content -->
+      <div class="card-scroll">
+        <!-- Card Header -->
+        <div class="card-header">
+          <div class="card-icon">
+            <i class="ph-duotone ph-coins"></i>
+          </div>
+          <h1 class="card-title">Receive USD</h1>
+        </div>
+        <div class="card-body">
+          <!-- Dropdowns Row -->
+          <div class="dropdowns-row">
+            <!-- Asset Dropdown -->
+            <div class="input-field">
+              <label class="input-label">Asset</label>
+              <div class="input-box" id="asset-dropdown" tabindex="0">
+                <span class="input-placeholder-icon" id="asset-placeholder-icon">
+                  <i class="ph ph-coin"></i>
+                </span>
+                <img class="input-icon hidden" id="asset-icon" src="" alt="">
+                <span class="input-text placeholder" id="asset-text">Select asset</span>
+                <i class="ph ph-caret-down input-caret" id="asset-caret"></i>
+              </div>
+              <div class="dropdown-menu" id="asset-menu">
+                <div class="dropdown-option" data-value="USDT" data-icon="src/assets/svg/Type - USDT.svg">
+                  <img class="dropdown-option-icon" src="src/assets/svg/Type - USDT.svg" alt="USDT">
+                  <span class="dropdown-option-text">USDT</span>
+                  <i class="ph-fill ph-check-circle dropdown-check"></i>
+                </div>
+                <div class="dropdown-option" data-value="USDC" data-icon="src/assets/svg/Type - USDC.svg">
+                  <img class="dropdown-option-icon" src="src/assets/svg/Type - USDC.svg" alt="USDC">
+                  <span class="dropdown-option-text">USDC</span>
+                  <i class="ph-fill ph-check-circle dropdown-check"></i>
+                </div>
+              </div>
+            </div>
+
+            <!-- Network Dropdown -->
+            <div class="input-field">
+              <label class="input-label">Network</label>
+              <div class="input-box" id="network-dropdown" tabindex="0">
+                <span class="input-placeholder-icon" id="network-placeholder-icon">
+                  <i class="ph ph-stack-simple"></i>
+                </span>
+                <img class="input-icon hidden" id="network-icon" src="" alt="">
+                <span class="input-text placeholder" id="network-text">Select network</span>
+                <i class="ph ph-caret-down input-caret" id="network-caret"></i>
+              </div>
+              <div class="dropdown-menu" id="network-menu">
+                <div class="dropdown-option" data-value="Ethereum" data-icon="src/assets/svg/Type - Ethereum.svg" data-qr="src/assets/svg/QR Code - Eth.svg">
+                  <img class="dropdown-option-icon" src="src/assets/svg/Type - Ethereum.svg" alt="Ethereum">
+                  <span class="dropdown-option-text">Ethereum</span>
+                  <i class="ph-fill ph-check-circle dropdown-check"></i>
+                </div>
+                <div class="dropdown-option" data-value="BNB Smart Chain" data-icon="src/assets/svg/Type - BSC.svg" data-qr="src/assets/svg/QR Code - BSC.svg">
+                  <img class="dropdown-option-icon" src="src/assets/svg/Type - BSC.svg" alt="BNB Smart Chain">
+                  <span class="dropdown-option-text">BNB Smart Chain</span>
+                  <i class="ph-fill ph-check-circle dropdown-check"></i>
+                </div>
+                <div class="dropdown-option" data-value="Polygon" data-icon="src/assets/svg/Type - Polygon.svg" data-qr="src/assets/svg/QR Code - Polygon.svg">
+                  <img class="dropdown-option-icon" src="src/assets/svg/Type - Polygon.svg" alt="Polygon">
+                  <span class="dropdown-option-text">Polygon</span>
+                  <i class="ph-fill ph-check-circle dropdown-check"></i>
+                </div>
+                <div class="dropdown-option" data-value="Ton" data-icon="src/assets/svg/Type - Ton.svg" data-qr="src/assets/svg/QR Code - Ton.svg">
+                  <img class="dropdown-option-icon" src="src/assets/svg/Type - Ton.svg" alt="Ton">
+                  <span class="dropdown-option-text">Ton</span>
+                  <i class="ph-fill ph-check-circle dropdown-check"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- QR Code Section (hidden until both dropdowns selected) -->
+          <div class="qr-section hidden" id="qr-section">
+            <div class="qr-container">
+              <!-- Left: QR Code -->
+              <div class="qr-right">
+                <div class="qr-code" id="qr-code">
+                  <img src="src/assets/svg/QR Code.svg" alt="QR Code" class="qr-svg" id="qr-svg">
+                  <div class="qr-center-icon" id="qr-center-icon">
+                    <img src="src/assets/svg/QR Code - Eth.svg" alt="Ethereum" id="qr-network-icon">
+                  </div>
+                </div>
+              </div>
+              <!-- Divider -->
+              <div class="qr-divider"></div>
+              <!-- Right: Text + Address -->
+              <div class="qr-left">
+                <h2 class="qr-title">Scan the QR code to fund your USD wallet</h2>
+                <div class="qr-address-group">
+                  <span class="qr-address-label">or copy address</span>
+                  <div class="qr-address-row">
+                    <span class="address-value" id="address-value">0xf7834K...783JA83</span>
+                    <button class="qr-copy-btn" id="copy-button" aria-label="Copy address">
+                      <i class="ph-fill ph-copy"></i>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Info Rows -->
+          <div class="info-container">
+            <div class="info-row">
+              <span class="info-label">Our charges</span>
+              <span class="info-value">1% of amount</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Rate</span>
+              <span class="info-value" id="rate-value">1 USDT = $0.98</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Custom Scrollbar -->
+      <div class="custom-scrollbar" id="custom-scrollbar">
+        <div class="custom-scrollbar-thumb" id="custom-scrollbar-thumb"></div>
+      </div>
+
+      <!-- Sticky CTA Footer -->
+      <div class="card-footer">
+        <button class="cta-button disabled" id="cta-button" disabled><span>I have sent the funds</span></button>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="src/app.js"></script>
+</body>
+</html>
