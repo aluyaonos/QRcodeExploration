@@ -59,6 +59,154 @@
   const qrSection = document.getElementById('qr-section');
   const ctaButton = document.getElementById('cta-button');
 
+  // ---- QR SVG (fetched and inlined so path elements are animatable) ----
+  var qrContainer = document.getElementById('qr-svg-container');
+  var qrSvg = null;
+
+  fetch('src/assets/svg/QR Code.svg')
+    .then(function (r) { return r.text(); })
+    .then(function (svgText) {
+      qrContainer.innerHTML = svgText;
+      qrSvg = qrContainer.querySelector('svg');
+      qrSvg.setAttribute('width', '100%');
+      qrSvg.setAttribute('height', '100%');
+    });
+
+  // ---- QR Wave Animation (colour wave through existing SVG paths — no movement, no extra elements) ----
+  var waveAnimId = 0;
+
+  function triggerQRWave() {
+    if (!qrSvg) return;
+
+    // Cancel any in-progress animation before starting a new one
+    var currentId = ++waveAnimId;
+
+    var paths = Array.from(qrSvg.querySelectorAll('path'));
+    var vbCx = 120;
+    var vbCy = 120;
+    var maxDist = Math.sqrt(120 * 120 + 120 * 120); // ≈ 169.7
+
+    // ---- Classify finder-pattern (eye) paths ----
+    // Compute overall data bounding box, then threshold at 38% from each edge.
+    // Standard QR finder patterns occupy the first ~33% of modules from each corner edge.
+    var dataMinX = Infinity, dataMinY = Infinity, dataMaxX = -Infinity, dataMaxY = -Infinity;
+    paths.forEach(function (p) {
+      var bb = p.getBBox();
+      dataMinX = Math.min(dataMinX, bb.x);
+      dataMinY = Math.min(dataMinY, bb.y);
+      dataMaxX = Math.max(dataMaxX, bb.x + bb.width);
+      dataMaxY = Math.max(dataMaxY, bb.y + bb.height);
+    });
+    var dW   = dataMaxX - dataMinX;
+    var dH   = dataMaxY - dataMinY;
+    var eyeXL = dataMinX + dW * 0.38; // left-column threshold
+    var eyeXR = dataMaxX - dW * 0.38; // right-column threshold
+    var eyeYT = dataMinY + dH * 0.38; // top-row threshold
+    var eyeYB = dataMaxY - dH * 0.38; // bottom-row threshold
+
+    var modules = paths.map(function (path) {
+      var bbox = path.getBBox();
+      var cx   = bbox.x + bbox.width  / 2;
+      var cy   = bbox.y + bbox.height / 2;
+      var dist = Math.sqrt(Math.pow(cx - vbCx, 2) + Math.pow(cy - vbCy, 2));
+
+      // A path belongs to a finder pattern if it sits in one of the three eye corners
+      var isEye = (cx < eyeXL && cy < eyeYT) ||  // top-left
+                  (cx > eyeXR && cy < eyeYT) ||  // top-right
+                  (cx < eyeXL && cy > eyeYB);    // bottom-left
+
+      return { el: path, delay: (dist / maxDist) * 1200, dur: 300, isEye: isEye };
+    });
+
+    var eyeModules  = modules.filter(function (m) { return  m.isEye; });
+    var waveModules = modules.filter(function (m) { return !m.isEye; });
+
+    // Eye glow timing (ms from animation start)
+    var EYE_START = 1100; // glow fades in as wave nears the edges
+    var EYE_PEAK  = 1500; // wave fully settled — glow at maximum
+    var EYE_END   = 2000; // glow faded back to dark
+
+    var startTime = performance.now();
+
+    function frame(now) {
+      if (waveAnimId !== currentId) return; // a newer wave started; stop this one
+
+      var elapsed   = now - startTime;
+      var waveAlive = false;
+      var glowAlive = elapsed < EYE_END;
+
+      // ---- Wave animation (non-eye modules only) ----
+      for (var i = 0; i < waveModules.length; i++) {
+        var m      = waveModules[i];
+        var localT = elapsed - m.delay;
+
+        if (localT < 0) { waveAlive = true; continue; }
+
+        var progress = localT / m.dur;
+
+        if (progress >= 1) {
+          m.el.style.fill = '#1A1A21'; // explicit colour prevents white flash on cleanup
+          continue;
+        }
+
+        waveAlive = true;
+
+        // Asymmetric 3-stop colour curve (sharp ring, no grey on return):
+        //  0.00 → 0.15 : dark  → grey    (leading edge)
+        //  0.15 → 0.35 : grey  → purple  (peak ring)
+        //  0.35 → 1.00 : purple → dark   (trailing edge, skips grey)
+        var r, g, b, t;
+        if (progress <= 0.15) {
+          t = progress / 0.15;
+          r = Math.round(26  + t * (238 - 26));
+          g = Math.round(26  + t * (238 - 26));
+          b = Math.round(33  + t * (240 - 33));
+        } else if (progress <= 0.35) {
+          t = (progress - 0.15) / 0.20;
+          r = Math.round(238 + t * (136 - 238));
+          g = Math.round(238 + t * (114 - 238));
+          b = Math.round(240 + t * (253 - 240));
+        } else {
+          t = (progress - 0.35) / 0.65;
+          r = Math.round(136 + t * (26  - 136));
+          g = Math.round(114 + t * (26  - 114));
+          b = Math.round(253 + t * (33  - 253));
+        }
+        m.el.style.fill = 'rgb(' + r + ',' + g + ',' + b + ')';
+      }
+
+      // ---- Eye glow animation ----
+      // Eyes are excluded from the wave; instead they receive a subtle purple
+      // glow that rises and falls at the tail end of the overall animation.
+      if (glowAlive) {
+        var intensity, glowT;
+        if (elapsed < EYE_START) {
+          intensity = 0;
+        } else if (elapsed < EYE_PEAK) {
+          glowT     = (elapsed - EYE_START) / (EYE_PEAK - EYE_START);
+          intensity = glowT * 0.6; // ramps up to 60% towards purple
+        } else {
+          glowT     = (elapsed - EYE_PEAK) / (EYE_END - EYE_PEAK);
+          intensity = (1 - glowT) * 0.6; // fades back to 0
+        }
+        var er = Math.round(26 + intensity * (136 - 26));
+        var eg = Math.round(26 + intensity * (114 - 26));
+        var eb = Math.round(33 + intensity * (253 - 33));
+        var eyeFill = intensity > 0.001 ? 'rgb(' + er + ',' + eg + ',' + eb + ')' : '#1A1A21';
+        eyeModules.forEach(function (m) { m.el.style.fill = eyeFill; });
+      }
+
+      if (waveAlive || glowAlive) {
+        requestAnimationFrame(frame);
+      } else {
+        // Everything finished — clear inline styles so SVG fill attributes take back over
+        modules.forEach(function (m) { m.el.style.fill = ''; });
+      }
+    }
+
+    requestAnimationFrame(frame);
+  }
+
   // ---- Update UI ----
   function updateUI() {
     var bothSelected = selectedAsset && selectedNetwork;
@@ -89,18 +237,13 @@
     }
 
     // Update QR center icon with wave animation
-    var qrCode = document.getElementById('qr-code');
-    var prevIcon = qrNetworkIcon.src;
-    qrNetworkIcon.src = QR_ICONS[selectedNetwork];
+    var prevSrc = qrNetworkIcon.getAttribute('src');
+    var newSrc = QR_ICONS[selectedNetwork];
+    qrNetworkIcon.src = newSrc;
     qrNetworkIcon.alt = selectedNetwork;
 
-    if (prevIcon !== QR_ICONS[selectedNetwork]) {
-      var wave = document.createElement('div');
-      wave.className = 'qr-wave';
-      qrCode.appendChild(wave);
-      wave.addEventListener('animationend', function () {
-        wave.remove();
-      });
+    if (prevSrc !== newSrc) {
+      triggerQRWave();
     }
 
     // Update rate
