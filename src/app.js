@@ -88,9 +88,20 @@
       }, 600);
     }
 
-    // Update QR center icon
+    // Update QR center icon with wave animation
+    var qrCode = document.getElementById('qr-code');
+    var prevIcon = qrNetworkIcon.src;
     qrNetworkIcon.src = QR_ICONS[selectedNetwork];
     qrNetworkIcon.alt = selectedNetwork;
+
+    if (prevIcon !== QR_ICONS[selectedNetwork]) {
+      var wave = document.createElement('div');
+      wave.className = 'qr-wave';
+      qrCode.appendChild(wave);
+      wave.addEventListener('animationend', function () {
+        wave.remove();
+      });
+    }
 
     // Update rate
     rateValue.textContent = '1 ' + selectedAsset + ' = $0.98';
