@@ -627,7 +627,7 @@ button {
 .qr-divider {
   width: 1px;
   align-self: stretch;
-  background: #EEEEF0;
+  background: #F5F6F8;
   flex-shrink: 0;
   margin: 0 2rem;
 }
@@ -636,8 +636,9 @@ button {
 .qr-left {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
-  max-width: 12.25rem;
+  justify-content: space-between;
+  max-width: 12.5rem;
+  height: 10rem;
 }
 
 .qr-title {
@@ -647,6 +648,29 @@ button {
   line-height: 1.75rem;
   color: #1A1A21;
   letter-spacing: 0.0125rem;
+}
+
+.qr-or-divider {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 1.25rem;
+}
+
+.qr-or-text {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.75rem;
+  line-height: 1.125rem;
+  font-weight: 400;
+  color: #8C94A6;
+  letter-spacing: -0.0075rem;
+  flex-shrink: 0;
+}
+
+.qr-or-line {
+  flex: 1;
+  height: 1px;
+  background-color: #F5F6F8;
 }
 
 .qr-address-group {
@@ -667,7 +691,7 @@ button {
 .qr-address-row {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  justify-content: space-between;
 }
 
 .address-value {
@@ -772,6 +796,7 @@ button {
 .qr-center-icon img {
   width: 1.375rem;
   height: 1.375rem;
+  transition: opacity 0.18s ease;
 }
 
 

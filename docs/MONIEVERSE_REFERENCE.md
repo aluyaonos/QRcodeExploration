@@ -187,6 +187,35 @@ background:
 - The icon in the **center of the QR code changes based on the selected network** (e.g., Ethereum diamond, Polygon logo, etc.).
 - Below the QR code, a divider with "or" separates it from the wallet address.
 
+#### QR Code "Eyes" — Definition (CRITICAL)
+
+The **eyes** of the QR code are the **three finder-pattern shapes** located at:
+- **Top-left corner**
+- **Top-right corner**
+- **Bottom-left corner**
+
+Each eye consists of exactly **two paths** in the SVG:
+1. A large **rounded outer square** (border ring)
+2. A filled **inner circle / dot**
+
+These are the visually distinct square-with-circle shapes visible in the three corners. They are **NOT** the small individual data module squares that make up the rest of the QR code.
+
+**Absolute SVG coordinates** (viewBox `0 0 240 240`):
+
+| Eye           | x range   | y range   | Centre (cx, cy) |
+|---------------|-----------|-----------|-----------------|
+| Top-left      | 18 – 61   | 18 – 61   | ≈ (40, 40)      |
+| Top-right     | 178 – 221 | 18 – 61   | ≈ (200, 40)     |
+| Bottom-left   | 18 – 61   | 178 – 221 | ≈ (40, 200)     |
+
+**Classification rule used in `src/app.js`** (do not change to percentage-based):
+```js
+var isEye = (cx < 65  && cy < 65)  ||   // top-left finder
+            (cx > 175 && cy < 65)  ||   // top-right finder
+            (cx < 65  && cy > 175);     // bottom-left finder
+```
+Data modules adjacent to the finders start at x/y ≈ 67, so the `< 65` / `> 175` boundaries cleanly isolate only the finder paths with no leakage into data modules. **Never revert to a percentage-of-bounding-box approach.**
+
 ### Wallet Address Row
 
 - Label: "Address"
