@@ -107,7 +107,7 @@
     var eyeModules  = allModules.filter(function (m) { return  m.isEye; });
     var waveModules = allModules.filter(function (m) { return !m.isEye; });
 
-    var EYE_TRIGGER_AT = 780;  // ms — trigger point for eye click animation
+    var EYE_TRIGGER_AT = 580;  // ms — trigger point for eye click animation
 
     // Setup scale-transform properties on wave modules once (each path scales around its own centre)
     waveModules.forEach(function (m) {
@@ -224,10 +224,10 @@
       if (waveAnimId !== currentId) return;
 
       var PHASE_IN      = 120;   // ms — shared ease-in for both colour and scale
-      var COLOUR_HOLD   = 800;   // ms — colour holds peak purple until 800ms (50% of 1600ms)
-      var COLOUR_END    = 1600;  // ms — colour ease-out finishes at 1600ms
+      var COLOUR_HOLD   = 1000;  // ms — colour holds peak purple until 1000ms (50% of 2000ms)
+      var COLOUR_END    = 2000;  // ms — colour ease-out finishes at 2000ms
       var SCALE_END     = 300;   // ms — scale (click) animation finishes at 300ms
-      var TOTAL_DUR     = 1600;  // ms — overall animation lifetime
+      var TOTAL_DUR     = 2000;  // ms — overall animation lifetime
 
       // Prepare transform properties once
       eyeModules.forEach(function (m) {
