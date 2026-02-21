@@ -50,6 +50,7 @@
 
   const qrNetworkIcon = document.getElementById('qr-network-icon');
   const addressValue = document.getElementById('address-value');
+  const addressLoader = document.getElementById('address-loader');
   const rateValue = document.getElementById('rate-value');
   const copyButton = document.getElementById('copy-button');
 
@@ -329,11 +330,11 @@
     // Update address with skeleton loader
     var newAddress = ADDRESSES[key] || '0x0000...0000';
     if (addressValue.textContent !== newAddress) {
-      addressValue.classList.add('loading');
+      addressLoader.classList.add('visible');
       setTimeout(function () {
         addressValue.textContent = newAddress;
-        addressValue.classList.remove('loading');
-      }, 600);
+        addressLoader.classList.remove('visible');
+      }, 900);
     }
 
     // Update QR center icon with fade ease-in/ease-out transition

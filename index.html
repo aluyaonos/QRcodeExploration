@@ -161,13 +161,18 @@
               <div class="qr-left">
                 <h2 class="qr-title">Scan the QR code to fund your USD wallet</h2>
                 <div class="qr-or-divider">
-                  <span class="qr-or-text">or</span>
+                  <span class="qr-or-text">or copy</span>
                   <div class="qr-or-line"></div>
                 </div>
                 <div class="qr-address-group">
                   <span class="qr-address-label">Address</span>
                   <div class="qr-address-row">
-                    <span class="address-value" id="address-value">0xf7834K...783JA83</span>
+                    <div class="address-value-wrapper">
+                      <span class="address-value" id="address-value">0xf7834K...783JA83</span>
+                      <div class="address-loader" id="address-loader">
+                        <div class="address-loader-spinner"></div>
+                      </div>
+                    </div>
                     <button class="qr-copy-btn" id="copy-button" aria-label="Copy address">
                       <i class="ph-fill ph-copy"></i>
                     </button>
