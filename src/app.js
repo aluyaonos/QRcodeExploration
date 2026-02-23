@@ -60,6 +60,22 @@
   const qrSection = document.getElementById('qr-section');
   const ctaButton = document.getElementById('cta-button');
 
+  // Step 2 DOM refs
+  var stepperStep1      = document.getElementById('stepper-step-1');
+  var stepperStep2      = document.getElementById('stepper-step-2');
+  var stepCurrent       = document.getElementById('step-current');
+  var headerBar         = document.getElementById('header-bar');
+  var headerCenterText  = document.getElementById('header-center-text');
+  var headerAmountDisplay = document.getElementById('header-amount-display');
+  var step1Inner        = document.getElementById('step-1-inner');
+  var step2Inner        = document.getElementById('step-2-inner');
+  var s2Actions         = document.getElementById('s2-actions');
+  var s2AssetSuffix     = document.getElementById('s2-asset-suffix');
+  var s2AmountInput     = document.getElementById('s2-amount-input');
+  var s2TxidInput       = document.getElementById('s2-txid-input');
+  var s2PasteBtn        = document.getElementById('s2-paste-btn');
+  var s2BackBtn         = document.getElementById('s2-back-btn');
+
   // ---- QR SVG (fetched and inlined so path elements are animatable) ----
   var qrContainer = document.getElementById('qr-svg-container');
   var qrSvg = null;
@@ -485,6 +501,102 @@
 
   document.addEventListener('mouseup', function () {
     isDragging = false;
+  });
+
+  // ---- Step 2: Show confirmation page ----
+  function showStep2() {
+    // Stepper: step 1 → completed, step 2 → active
+    stepperStep1.classList.remove('active');
+    stepperStep1.classList.add('completed');
+    stepperStep2.classList.remove('inactive');
+    stepperStep2.classList.add('active');
+
+    // Step counter
+    stepCurrent.textContent = '2';
+
+    // Progress bar 50% → 100%
+    headerBar.classList.remove('step-1-return');
+    headerBar.classList.add('step-2');
+
+    // Header center text
+    s2AssetSuffix.textContent = selectedAsset || 'USD';
+    headerAmountDisplay.textContent = (s2AmountInput.value || '0') + ' ' + (selectedAsset || 'USD');
+    headerCenterText.classList.remove('hidden');
+
+    // Swap card content
+    step1Inner.classList.add('hidden');
+    step2Inner.classList.remove('hidden');
+
+    // Swap footer buttons
+    ctaButton.classList.add('hidden');
+    s2Actions.classList.remove('hidden');
+
+    // Scroll to top
+    cardScroll.scrollTop = 0;
+  }
+
+  // ---- Step 1: Return to details page ----
+  function showStep1() {
+    // Stepper: step 1 → active, step 2 → inactive
+    stepperStep1.classList.remove('completed');
+    stepperStep1.classList.add('active');
+    stepperStep2.classList.remove('active');
+    stepperStep2.classList.add('inactive');
+
+    // Step counter
+    stepCurrent.textContent = '1';
+
+    // Progress bar 100% → 50%
+    headerBar.classList.remove('step-2');
+    headerBar.classList.add('step-1-return');
+
+    // Hide header center text
+    headerCenterText.classList.add('hidden');
+
+    // Swap card content
+    step2Inner.classList.add('hidden');
+    step1Inner.classList.remove('hidden');
+
+    // Swap footer buttons
+    s2Actions.classList.add('hidden');
+    ctaButton.classList.remove('hidden');
+  }
+
+  // ---- CTA Button → Step 2 ----
+  ctaButton.addEventListener('click', function () {
+    if (!ctaButton.disabled) {
+      showStep2();
+    }
+  });
+
+  // ---- Back Button → Step 1 ----
+  s2BackBtn.addEventListener('click', showStep1);
+
+  // ---- Paste Button ----
+  s2PasteBtn.addEventListener('click', function () {
+    navigator.clipboard.readText().then(function (text) {
+      s2TxidInput.value = text;
+    }).catch(function () {});
+  });
+
+  // ---- Amount Input — comma formatting + header sync ----
+  s2AmountInput.addEventListener('input', function () {
+    var raw = this.value.replace(/,/g, '');          // strip existing commas
+    var clean = raw.replace(/[^0-9.]/g, '');         // digits and decimal only
+
+    // Allow only one decimal point
+    var parts = clean.split('.');
+    if (parts.length > 2) {
+      clean = parts[0] + '.' + parts.slice(1).join('');
+      parts = clean.split('.');
+    }
+
+    // Format integer part with thousand separators
+    parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    this.value = parts.join('.');
+
+    // Header sync uses the clean (unformatted) value
+    headerAmountDisplay.textContent = (clean || '0') + ' ' + (selectedAsset || 'USD');
   });
 
   // ---- Copy Button ----

@@ -25,6 +25,7 @@
       <div class="header-logo">
         <img src="src/assets/svg/Logo - Moniverse.svg" alt="MonieVerse" height="32">
       </div>
+      <p class="header-center-text hidden" id="header-center-text">Send <strong id="header-amount-display">0 USD</strong></p>
       <div class="header-right">
         <div class="header-avatar">DS</div>
         <span class="header-divider"></span>
@@ -37,7 +38,7 @@
       </div>
     </div>
     <div class="header-bar-track">
-      <div class="header-bar"></div>
+      <div class="header-bar" id="header-bar"></div>
     </div>
   </header>
 
@@ -51,19 +52,21 @@
 
     <!-- Left Stepper -->
     <div class="stepper">
-      <div class="stepper-step active">
-        <span class="stepper-dot"></span>
+      <div class="stepper-step active" id="stepper-step-1">
+        <span class="stepper-dot">
+          <i class="ph-bold ph-check stepper-check-icon"></i>
+        </span>
         <span class="stepper-label">Details</span>
       </div>
       <div class="stepper-connector"></div>
-      <div class="stepper-step inactive">
+      <div class="stepper-step inactive" id="stepper-step-2">
         <span class="stepper-dot"></span>
         <span class="stepper-label">Confirmation</span>
       </div>
     </div>
 
     <!-- Step Counter -->
-    <div class="step-counter">Step <span class="step-current">1</span> / 2</div>
+    <div class="step-counter">Step <span class="step-current" id="step-current">1</span> / 2</div>
 
     <!-- Main Card -->
     <div class="card">
@@ -72,6 +75,8 @@
 
       <!-- Scrollable Content -->
       <div class="card-scroll">
+        <!-- Step 1 -->
+        <div id="step-1-inner">
         <!-- Card Header -->
         <div class="card-header">
           <div class="card-icon">
@@ -194,7 +199,41 @@
             </div>
           </div>
         </div>
-      </div>
+        </div><!-- /step-1-inner -->
+
+        <!-- Step 2: Confirm Transfer -->
+        <div id="step-2-inner" class="hidden">
+          <div class="card-header">
+            <div class="card-icon">
+              <i class="ph-duotone ph-receipt"></i>
+            </div>
+            <h1 class="card-title">Confirm Transfer</h1>
+          </div>
+          <div class="s2-body">
+            <div class="s2-fields">
+              <!-- Amount Sent -->
+              <div class="s2-field">
+                <label class="s2-label" for="s2-amount-input">Amount sent</label>
+                <div class="s2-input-box">
+                  <input class="s2-input" id="s2-amount-input" type="text" inputmode="decimal" placeholder="0.00">
+                  <span class="s2-asset-suffix" id="s2-asset-suffix">USDT</span>
+                </div>
+              </div>
+              <!-- Transaction ID -->
+              <div class="s2-field">
+                <div class="s2-label-row">
+                  <label class="s2-label" for="s2-txid-input">Transaction ID</label>
+                  <i class="ph ph-info s2-info-icon"></i>
+                </div>
+                <div class="s2-input-box">
+                  <input class="s2-input" id="s2-txid-input" type="text" placeholder="Enter the Transaction ID">
+                  <button class="s2-paste-btn" id="s2-paste-btn">Paste</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div><!-- /step-2-inner -->
+      </div><!-- /card-scroll -->
 
       <!-- Custom Scrollbar -->
       <div class="custom-scrollbar" id="custom-scrollbar">
@@ -204,6 +243,15 @@
       <!-- Sticky CTA Footer -->
       <div class="card-footer">
         <button class="cta-button disabled" id="cta-button" disabled><span>I have sent the funds</span></button>
+        <div class="s2-actions hidden" id="s2-actions">
+          <button class="s2-back-btn" id="s2-back-btn">
+            <i class="ph ph-caret-left"></i>
+            <span>Back</span>
+          </button>
+          <button class="s2-continue-btn" id="s2-continue-btn">
+            <span>Continue</span>
+          </button>
+        </div>
       </div>
     </div>
 

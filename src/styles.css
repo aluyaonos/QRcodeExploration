@@ -884,3 +884,243 @@ button {
   background: #B6AAF9;
   cursor: not-allowed;
 }
+
+/* ========================================
+   Step 2 — Confirm Transfer
+   ======================================== */
+
+/* Header center text */
+.header-inner {
+  position: relative;
+}
+
+.header-center-text {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 400;
+  color: #1A1A21;
+  white-space: nowrap;
+}
+
+.header-center-text strong {
+  font-weight: 600;
+}
+
+.header-center-text.hidden {
+  display: none;
+}
+
+/* Progress bar — step 2 grow and step 1 shrink animations */
+@keyframes barGrowFull {
+  from { width: 50%; }
+  to   { width: 100%; }
+}
+
+@keyframes barShrinkToHalf {
+  from { width: 100%; }
+  to   { width: 50%; }
+}
+
+.header-bar.step-2 {
+  width: 100%;
+  animation: barGrowFull 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.header-bar.step-1-return {
+  width: 50%;
+  animation: barShrinkToHalf 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+/* Stepper — completed state */
+.stepper-check-icon {
+  display: none;
+  font-size: 0.875rem;
+  color: #8872FD;
+}
+
+.stepper-step.completed .stepper-check-icon {
+  display: block;
+}
+
+.stepper-step.completed .stepper-label {
+  color: #8C94A6;
+}
+
+/* Step inner containers — hidden state */
+#step-1-inner.hidden,
+#step-2-inner.hidden {
+  display: none;
+}
+
+#cta-button.hidden {
+  display: none;
+}
+
+/* Step 2 — Body */
+.s2-body {
+  padding: 3rem 2.5rem 9rem;
+}
+
+.s2-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.s2-field {
+  display: flex;
+  flex-direction: column;
+}
+
+.s2-label {
+  display: block;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-weight: 500;
+  color: #49576D;
+  letter-spacing: -0.01em;
+  margin-bottom: 0.25rem;
+}
+
+.s2-label-row {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.25rem;
+}
+
+.s2-label-row .s2-label {
+  margin-bottom: 0;
+}
+
+.s2-info-icon {
+  font-size: 1rem;
+  color: #8C94A6;
+  flex-shrink: 0;
+}
+
+.s2-input-box {
+  width: 100%;
+  border: 1px solid #EEEEF0;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: #FFFFFF;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.s2-input-box:focus-within {
+  border-color: #8872FD;
+  box-shadow: 0 0 0 3px #DDD7FE;
+}
+
+.s2-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 400;
+  color: #101828;
+  letter-spacing: -0.02em;
+  background: transparent;
+  min-width: 0;
+}
+
+.s2-input::placeholder {
+  color: #8C94A6;
+}
+
+.s2-asset-suffix {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  color: #8C94A6;
+  flex-shrink: 0;
+}
+
+.s2-paste-btn {
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  color: #8872FD;
+  text-decoration: underline;
+  letter-spacing: -0.02em;
+  background: none;
+  padding: 0;
+  flex-shrink: 0;
+  transition: color 0.15s ease;
+}
+
+.s2-paste-btn:hover {
+  color: #7560e0;
+}
+
+/* Step 2 — Action buttons */
+.s2-actions {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.s2-actions.hidden {
+  display: none;
+}
+
+.s2-back-btn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+  padding: 1rem 1.5rem;
+  border: 1.5px solid #E4E3EC;
+  border-radius: 0.75rem;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  color: #1A1A21;
+  letter-spacing: -0.02em;
+  background: transparent;
+  transition: background 0.15s ease;
+}
+
+.s2-back-btn:hover {
+  background: #F9F9FB;
+}
+
+.s2-back-btn i {
+  font-size: 1.25rem;
+  flex-shrink: 0;
+}
+
+.s2-continue-btn {
+  width: 21.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem 1.5rem;
+  border-radius: 0.75rem;
+  background: #B6AAF9;
+  font-family: 'Inter', sans-serif;
+  font-size: 1rem;
+  line-height: 1.5rem;
+  font-weight: 500;
+  color: #FFFFFF;
+  letter-spacing: -0.02em;
+  transition: background 0.15s ease;
+}
+
+.s2-continue-btn:hover {
+  background: #a397f5;
+}
