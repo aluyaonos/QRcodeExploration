@@ -917,16 +917,16 @@ button {
 /* Progress bar — step 2 grow and step 1 shrink animations */
 @keyframes barGrowFull {
   from { width: 50%; }
-  to   { width: 100%; }
+  to   { width: 85%; }
 }
 
 @keyframes barShrinkToHalf {
-  from { width: 100%; }
+  from { width: 85%; }
   to   { width: 50%; }
 }
 
 .header-bar.step-2 {
-  width: 100%;
+  width: 85%;
   animation: barGrowFull 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
@@ -1083,7 +1083,7 @@ button {
   justify-content: center;
   gap: 0.25rem;
   padding: 1rem 1.5rem;
-  border: 1.5px solid #E4E3EC;
+  border: 1px solid #F1F1F3;
   border-radius: 0.75rem;
   font-family: 'Inter', sans-serif;
   font-size: 1rem;
