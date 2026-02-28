@@ -998,10 +998,56 @@ button {
   margin-bottom: 0;
 }
 
+.s2-info-wrap {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+
 .s2-info-icon {
   font-size: 1rem;
   color: #8C94A6;
-  flex-shrink: 0;
+  cursor: pointer;
+  display: block;
+}
+
+.s2-tooltip {
+  position: absolute;
+  top: calc(100% + 0.5rem);
+  left: 0;
+  width: 17.5rem;
+  background: #1A1A21;
+  color: #FFFFFF;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.8125rem;
+  line-height: 1.375rem;
+  font-weight: 400;
+  letter-spacing: -0.01em;
+  padding: 0.75rem 1rem;
+  border-radius: 0.75rem;
+  z-index: 200;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+  white-space: normal;
+}
+
+/* Upward-pointing arrow at top-left */
+.s2-tooltip::before {
+  content: '';
+  position: absolute;
+  top: -0.3125rem;
+  left: 0.4375rem;
+  width: 0.625rem;
+  height: 0.625rem;
+  background: #1A1A21;
+  transform: rotate(45deg);
+  border-radius: 0.0625rem;
+}
+
+.s2-info-wrap:hover .s2-tooltip {
+  opacity: 1;
 }
 
 .s2-input-box {
