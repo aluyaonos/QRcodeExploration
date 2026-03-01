@@ -1014,9 +1014,9 @@ button {
 
 .s2-tooltip {
   position: absolute;
-  top: calc(100% + 0.5rem);
-  left: 0;
-  width: 17.5rem;
+  top: calc(100% + 0.625rem);
+  left: -0.75rem;
+  width: 20rem;
   background: #1A1A21;
   color: #FFFFFF;
   font-family: 'Inter', sans-serif;
@@ -1024,7 +1024,7 @@ button {
   line-height: 1.375rem;
   font-weight: 400;
   letter-spacing: -0.01em;
-  padding: 0.75rem 1rem;
+  padding: 0.875rem 1rem;
   border-radius: 0.75rem;
   z-index: 200;
   pointer-events: none;
@@ -1038,12 +1038,11 @@ button {
   content: '';
   position: absolute;
   top: -0.3125rem;
-  left: 0.4375rem;
+  left: 1rem;
   width: 0.625rem;
   height: 0.625rem;
   background: #1A1A21;
   transform: rotate(45deg);
-  border-radius: 0.0625rem;
 }
 
 .s2-info-wrap:hover .s2-tooltip {
